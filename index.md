@@ -9,14 +9,13 @@ Here are my projects:
 ### [Pitch Sequencing Analysis](#)
 In this project, I created code in R to create a report analyzing pitch sequencing when given a Trackman csv.
 
-- [Link to Project Repository](https://github.com/username/project1)
-- [View PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/6d52ec99b18b91dad9d6e2813f8733d169efa4c3/Arizona%20Wildcats%20Pitch%20Sequencing%20Report.pdf)
+- [Learn More About the Pitch Sequencing Analysis Project](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/26eee3dbcc29374373c1361c0cb957916bc0776a/sequencing.md)
 - Technologies used: R and Trackman
 
 ### [Catcher Evaluation](#)
 This project uses R to evaluate a catcher's performance when given a Trackman csv.
 
-- [Link to Project Repository](https://github.com/username/project2)
+- [Learn More About the Catcher Evaluation Project](https://github.com/username/project2)
 - [View PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/968b9d2a5a14aaee7010f3607ae1ddc7994c14d6/Arizona%20Wildcats%20Catcher%20Evaluations.pdf)
 - Technologies used: R and Trackman
 
