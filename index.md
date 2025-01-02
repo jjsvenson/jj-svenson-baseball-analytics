@@ -1,6 +1,6 @@
 # Welcome to JJ Svenson's Baseball Analytics Page
 
-Hi, I'm **JJ Svenson**, a third year Statistics and Data Science major at UCLA with a passion for data analytics. Below are the baseball analytics projects that combine my knowledge in statistics and data science with my love my baseball. My goal is to investigate statistics relating to player performance.
+Hi, I'm **JJ Svenson**, a third year Statistics and Data Science major at UCLA with a passion for data analytics. Below are the baseball analytics projects that combine my knowledge in statistics and data science with my love for baseball. My goal is to investigate statistics relating to player performance.
 
 
 ## My Projects
