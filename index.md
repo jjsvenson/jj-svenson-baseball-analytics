@@ -6,13 +6,13 @@ Hi, I'm **JJ Svenson**, a third year Statistics and Data Science major at UCLA w
 ## My Projects
 
 ### [Pitch Sequencing Analysis](sequencing.md)
-In this project, I created code in R to create a report analyzing pitch sequencing when given a Trackman csv.
+In this project, I created code in R to create a report analyzing pitch sequencing when given a Trackman CSV.
 
 - [Learn More About the Pitch Sequencing Analysis Project](sequencing.md)
 - Technologies used: R and Trackman
 
 ### [Catcher Evaluation](catching.md)
-This project uses R to evaluate a catcher's performance when given a Trackman csv.
+This project uses R to evaluate a catcher's performance when given a Trackman CSV.
 
 - [Learn More About the Catcher Evaluation Project](catching.md)
 - Technologies used: R and Trackman
