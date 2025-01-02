@@ -12,7 +12,7 @@ In this project, I created code in R to create a report analyzing pitch sequenci
 - [View the Project's Outputted PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/6d52ec99b18b91dad9d6e2813f8733d169efa4c3/Arizona%20Wildcats%20Pitch%20Sequencing%20Report.pdf)
 - Technologies used: R and Trackman
 
-
+[Home Page](index.md)
 
 ---
 
