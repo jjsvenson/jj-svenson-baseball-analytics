@@ -15,8 +15,7 @@ In this project, I created code in R to create a report analyzing pitch sequenci
 ### [Catcher Evaluation](#)
 This project uses R to evaluate a catcher's performance when given a Trackman csv.
 
-- [Learn More About the Catcher Evaluation Project](https://github.com/username/project2)
-- [View PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/968b9d2a5a14aaee7010f3607ae1ddc7994c14d6/Arizona%20Wildcats%20Catcher%20Evaluations.pdf)
+- [Learn More About the Catcher Evaluation Project](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/7a15400afd2bb8fc7ba2fc1fe2d084539301060f/catching.md)
 - Technologies used: R and Trackman
 
 ---
