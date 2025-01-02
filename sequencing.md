@@ -18,4 +18,4 @@ In this project, I created code in R to create a report analyzing pitch sequenci
 
 ## Contact
 
-Feel free to connect with me at [svensonjj@gmail.com](mailto:svensonjj@gmail.com).
+I am always looking to improve my reports and to hear the opinions of others. If you have any questions or comments, feel free to connect with me at [svensonjj@gmail.com](mailto:svensonjj@gmail.com).
