@@ -19,6 +19,7 @@ This project uses R to evaluate a catcher's performance when given a Trackman cs
 - [Link to Project Repository](https://github.com/username/project2)
 - [View PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/968b9d2a5a14aaee7010f3607ae1ddc7994c14d6/Arizona%20Wildcats%20Catcher%20Evaluations.pdf)
 - Technologies used: R and Trackman
+
 ---
 
 ## Contact
