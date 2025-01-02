@@ -9,7 +9,7 @@ When making my catcher evaluation report, I wanted to use R to read a Trackman C
 ### [Catcher Evaluation](#)
 In this project, I created code in R to create a report analyzing pitch sequencing when given a Trackman csv.
 
-- [View The Project's Outputted PDF](Arizona-Wildcats-Catcher-Evaluations.pdf)
+- [View The Project's Outputted PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/968b9d2a5a14aaee7010f3607ae1ddc7994c14d6/Arizona%20Wildcats%20Catcher%20Evaluations.pdf)
 - Technologies used: R and Trackman
 
 [Home Page](index.md)
