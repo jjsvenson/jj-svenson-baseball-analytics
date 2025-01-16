@@ -15,7 +15,7 @@ In this project, I created code in R to create a report analyzing pitch sequenci
 This project uses R to evaluate a catcher's performance when given a Trackman CSV.
 
 - [Learn More About the Catcher Evaluation Project](catching.md)
-- Technologies used: R and Trackman 
+- Technologies used: R and Trackman
 
 ---
 
