@@ -17,6 +17,12 @@ This project uses R to evaluate a catcher's performance when given a Trackman CS
 - [Learn More About the Catcher Evaluation Project](catching.md)
 - Technologies used: R and Trackman
 
+### [Hitter Evaluation](hitting.md)
+This project uses R to evaluate a hitter's performance when given a Trackman CSV.
+
+- [Learn More About the Hitter Evaluation Project](hitting.md)
+- Technologies used: R and Trackman
+
 ---
 
 ## Contact
