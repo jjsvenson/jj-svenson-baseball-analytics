@@ -9,7 +9,7 @@ This report was created with the goal of evaluating a pitcher and his stuff. The
 ### Pitch Sequencing Analysis
 In this project, I created code in R to create a report analyzing pitch sequencing when given a Trackman CSV.
 
-- [View the Project's Outputted PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/18e6809f3541f9c1d18a8ca5f29c78081652a995/Iowa%202025%20Pitch%20Sequencing%20Report.pdf)
+- [View the Project's Outputted PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/42d9660e7880d8b250d6dc44f970c38a32696731/Iowa%202025%20Pitcher%20Evaluations.pdf)
 - Technologies used: R and Trackman
 
 [Home Page](index.md)
