@@ -11,6 +11,12 @@ In this project, I created code in R to create a report analyzing pitchers when 
 - [Learn More About the Pitcher Evaluation Analysis Project](pitchereval.md)
 - Technologies used: R and Trackman
 
+### [Pitch Similarity Analysis](similarity.md)
+In this project, I created code in R to create a report analyzing the results of all NCAA pitches of similar shape/metrics to a target pitcher's pitches when given a Trackman CSV.
+
+- [Learn More About the Pitch Similarity Analysis Project](similarity.md)
+- Technologies used: R and Trackman
+
 ### [Pitch Sequencing Analysis](sequencing.md)
 In this project, I created code in R to create a report analyzing pitch sequencing when given a Trackman CSV.
 
