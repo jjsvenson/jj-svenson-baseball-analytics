@@ -1,6 +1,6 @@
 # Welcome to JJ Svenson's Baseball Analytics Page
 
-Hi, I'm **JJ Svenson**, a third year Statistics and Data Science major at UCLA with a passion for data analytics. Below are the baseball analytics projects that combine my knowledge in statistics and data science with my love for baseball. My goal is to investigate statistics relating to player performance.
+Hello, I'm **JJ Svenson**, a fourth year Statistics and Data Science major at UCLA with a passion for data analytics. I am entering my fourth year as a Student Manager and Data Analyst for UCLA Baseball and was a Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League for the 2025 season. Below are the baseball analytics projects that combine my knowledge in statistics and data science with my love for baseball. My goal is to investigate statistics relating to player performance.
 
 
 ## My Projects
