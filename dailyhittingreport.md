@@ -2,7 +2,7 @@
 Using R as a tool and Trackman CSVs as my data, I aimed to make a report that could be used daily to evaluate a team's hitters.
 
 ## Project Description
-Working as a Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League, I aimed to create a coded report in R that could be used on a day to day basis to evaluate a team's hitters. The report uses Trackman data to present statistics relating to a hitter's performance in terms of contact quality, contact rates based on pitch type/location as well as ball/strike count, general approach and swing decisions, and on-base metrics. It is also color coded based on league averages for better interpretability. Formal definitions of the statistics are listed below:
+Working as a Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League, I aimed to create a coded report in R that could be used on a day to day basis to evaluate a team's hitters. The report uses Trackman data to present statistics relating to a hitter's performance in terms of contact quality, contact rates based on pitch type/location as well as ball/strike count, general approach and swing decisions, and on-base metrics. It is also color coded based on league averages for better interpretability. I find the day to day use of this report useful because it not only shows you season-long performance, but also recent performance in terms of both a hitter's last 18 plate appearances and their most recent game. This is useful for indentifying long term season trends as well as how hitters have been performing recently. Formal definitions of the statistics are listed below:
 
 #### Performance:
 - **Bullet/Swing (tables sorted by descending Bullet/Swing)**
