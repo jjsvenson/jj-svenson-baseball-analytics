@@ -38,6 +38,7 @@ Working as a Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Ca
 
 ### Daily Hitting Report
 In this project, I used R to code a report that could be used daily to evaluate a team's hitters using Trackman data.
+
 Here is an example of the report using the Harwich Mariners of the Cape Cod Baseball League.
 - [View The Project's Outputted PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/1e829623f8da770fb1312b8bd42f7236d5ab900d/Harwich%20Daily%20Hitting%20Report.pdf)
 - Technologies used: R and Trackman
