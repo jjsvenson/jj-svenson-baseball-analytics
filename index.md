@@ -6,37 +6,37 @@ Hello, I'm **JJ Svenson**, a fourth year Statistics and Data Science major at UC
 ## My Projects
 
 ### [Pitcher Evaluation Analysis](pitchereval.md)
-In this project, I created code in R to create a report analyzing pitchers when given a Trackman CSV.
+In this project, I created code in R to create a report analyzing pitchers when given Trackman data.
 
 - [Learn More About the Pitcher Evaluation Analysis Project](pitchereval.md)
 - Technologies used: R and Trackman
 
 ### [Pitch Similarity Analysis](similarity.md)
-In this project, I created code in R to create a report analyzing the results of all NCAA pitches of similar shape/metrics to a target pitcher's pitches when given a Trackman CSV.
+In this project, I created code in R to create a report analyzing the results of all NCAA pitches of similar shape/metrics to a target pitcher's pitches when given Trackman data.
 
 - [Learn More About the Pitch Similarity Analysis Project](similarity.md)
 - Technologies used: R and Trackman
 
 ### [Pitch Sequencing Analysis](sequencing.md)
-In this project, I created code in R to create a report analyzing pitch sequencing when given a Trackman CSV.
+In this project, I created code in R to create a report analyzing pitch sequencing when given Trackman data.
 
 - [Learn More About the Pitch Sequencing Analysis Project](sequencing.md)
 - Technologies used: R and Trackman
 
 ### [Daily Hitting Report](dailyhittingreport.md)
-In this project, I created code in R to create a report analyzing pitch sequencing when given a Trackman CSV.
+In this project, I used R to code a report that could be used daily to evaluate a team's hitters using Trackman data.
 
 - [Learn More About the Daily Hitting Report project](dailyhittingreport.md)
 - Technologies used: R and Trackman
 
 ### [Catcher Evaluation](catching.md)
-This project uses R to evaluate a catcher's performance when given a Trackman CSV.
+This project uses R to evaluate a catcher's performance when given Trackman data.
 
 - [Learn More About the Catcher Evaluation Project](catching.md)
 - Technologies used: R and Trackman
 
 ### [Hitter Evaluation](hitting.md)
-This project uses R to evaluate a hitter's performance when given a Trackman CSV.
+This project uses R to evaluate a hitter's performance when given Trackman data.
 
 - [Learn More About the Hitter Evaluation Project](hitting.md)
 - Technologies used: R and Trackman
