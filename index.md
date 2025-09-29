@@ -14,7 +14,7 @@ In this project, I wrote code in R to create a report analyzing a pitcher's outi
 ### [Pitcher Season Performance Report](seasonperformancereport.md)
 In this project, I wrote code in R to create a report that analyzes a pitcher's season and how they pitched vs specific teams.
 
-- [Learn More About the Pitcher Evaluation Analysis Project](seasonperformancereport.md)
+- [Learn More About the Pitcher Season Performance Report Project](seasonperformancereport.md)
 - Technologies used: R and Trackman
 
 ### [Pitcher Evaluation Analysis](pitchereval.md)
