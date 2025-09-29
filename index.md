@@ -6,7 +6,7 @@ Hello, I'm **JJ Svenson**, a fourth year Statistics and Data Science major at UC
 ## My Projects
 
 ### [Pitcher Post-Outing Report](postgame.md)
-In this project, I created code in R to create a report analyzing pitchers when given Trackman data.
+In this project, I wrote code in R to create a report analyzing a pitcher's outing.
 
 - [Learn More About the Pitcher Post-Outing Report Project](postgame.md)
 - Technologies used: R and Trackman
