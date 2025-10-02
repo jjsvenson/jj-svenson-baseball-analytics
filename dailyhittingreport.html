@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Hitting Report | JJ Svenson</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2c5282;
+            --accent-color: #c53030;
+            --text-dark: #1a202c;
+            --text-light: #4a5568;
+            --background: #ffffff;
+            --card-background: #f7fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--background);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .project-overview {
+            background: var(--card-background);
+            border-left: 4px solid var(--accent-color);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+        }
+
+        .project-overview h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-overview p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section h3 {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+            font-weight: 600;
+        }
+
+        .description-text {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .metric-category {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .metric-category h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .metric-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .metric-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .metric-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Highlights */
+        .highlights {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlights h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        .highlights ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .highlights li {
+            padding: 0.75rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .highlights li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* PDF Viewer */
+        .pdf-container {
+            background: var(--card-background);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pdf-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .pdf-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .pdf-button {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pdf-button:hover {
+            background: var(--secondary-color);
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 800px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border: 2px solid white;
+            border-radius: 6px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .footer-links a:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .pdf-viewer {
+                height: 600px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="back-link">Back to Portfolio</a>
+            <h1>Daily Hitting Report</h1>
+            <p class="subtitle">Real-time offensive performance evaluation for daily team analysis</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="project-overview">
+            <h2>Project Overview</h2>
+            <p>
+                Using R as a tool and Trackman CSVs as my data, I aimed to make a report that could be used daily to evaluate a team's hitters during the competitive Cape Cod Baseball League season.
+            </p>
+            <div class="tech-tags">
+                <span class="tech-tag">R Programming</span>
+                <span class="tech-tag">Trackman Data</span>
+                <span class="tech-tag">Daily Analytics</span>
+                <span class="tech-tag">Cape Cod Baseball League</span>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>Project Description</h2>
+            <p class="description-text">
+                Working as a Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League, I aimed to create a coded report in R that could be used on a day-to-day basis to evaluate a team's hitters. The report uses Trackman data to present statistics relating to a hitter's performance in terms of contact quality, contact rates based on pitch type/location as well as ball/strike count, general approach and swing decisions, and on-base metrics.
+            </p>
+            <p class="description-text">
+                It is also color coded based on league averages for better interpretability. I find the day-to-day use of this report useful because it not only shows you season-long performance, but also recent performance in terms of both a hitter's last 18 plate appearances and their most recent game. This is useful for identifying long term season trends as well as how hitters have been performing recently.
+            </p>
+
+            <div class="highlights">
+                <h3>Key Report Features</h3>
+                <ul>
+                    <li>Season-long performance statistics for comprehensive trend analysis</li>
+                    <li>Last 18 plate appearances for recent form evaluation</li>
+                    <li>Most recent game statistics for immediate feedback</li>
+                    <li>Color-coded metrics based on league averages for quick interpretation</li>
+                    <li>Multi-dimensional analysis covering contact quality, approach, and on-base performance</li>
+                </ul>
+            </div>
+
+            <h3>Statistical Metrics Definitions</h3>
+            
+            <div class="metrics-grid">
+                <div class="metric-category">
+                    <h4>Performance Metrics</h4>
+                    
+                    <div class="metric-item">
+                        <div class="metric-name">Bullet/Swing</div>
+                        <div class="metric-description">
+                            Bullets divided by Qualified Swings. A Bullet is defined as exit velocity 90+ mph with launch angle 0-40º. Qualified Swings are all swings except two-strike swings resulting in foul balls. Tables sorted by descending Bullet/Swing.
+                        </div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-name">Squared-up EV</div>
+                        <div class="metric-description">
+                            Average exit velocity on squared-up balls. Squared-up balls are defined as balls in play with exit velocity 85 mph or greater and launch angle between -5º and 40º.
+                        </div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-name">Mis-Hit%</div>
+                        <div class="metric-description">
+                            Number of mis-hits divided by balls in play. A mis-hit is a ball in play with launch angle less than -10º or greater than 40º.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-category">
+                    <h4>Approach Metrics</h4>
+                    
+                    <div class="metric-item">
+                        <div class="metric-name">FB-Middle Sw%</div>
+                        <div class="metric-description">
+                            Swing percentage on fastballs in the middle of the zone before reaching two-strike counts. Measures aggression on hittable pitches.
+                        </div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-name">Chase%</div>
+                        <div class="metric-description">
+                            Percentage of swings on pitches in the chase zone. Chase zone is defined as at least 1.5 baseballs outside the strike zone in any direction.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-category">
+                    <h4>Contact Metrics</h4>
+                    
+                    <div class="metric-item">
+                        <div class="metric-name">IZ Miss%</div>
+                        <div class="metric-description">
+                            Whiff percentage on pitches in the strike zone. Measures ability to make contact on hittable pitches.
+                        </div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-name">FB Miss%</div>
+                        <div class="metric-description">
+                            Whiff percentage specifically on fastballs. Important for evaluating contact ability against the most common pitch type.
+                        </div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-name">2K Fight%</div>
+                        <div class="metric-description">
+                            Number of two-strike fights divided by two-strike swings. A two-strike fight is a foul ball or ball in play with two strikes. Measures competitiveness in two-strike counts.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-category">
+                    <h4>On-Base Metrics</h4>
+                    
+                    <div class="metric-item">
+                        <div class="metric-name">BB%</div>
+                        <div class="metric-description">
+                            Walk percentage. Measures plate discipline and ability to draw walks.
+                        </div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-name">K%</div>
+                        <div class="metric-description">
+                            Strikeout percentage. Key metric for evaluating contact consistency and plate discipline.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Example Output: Harwich Mariners</h2>
+            <p class="description-text">
+                The following report demonstrates the daily hitting evaluation system using data from the Harwich Mariners of the Cape Cod Baseball League. This example showcases how the report provides coaches and players with immediate, actionable insights for daily performance review and adjustment.
+            </p>
+
+            <div class="pdf-container">
+                <div class="pdf-header">
+                    <div class="pdf-title">Harwich Daily Hitting Report</div>
+                    <div class="pdf-actions">
+                        <a href="Harwich%20Daily%20Hitting%20Report.pdf" class="pdf-button" target="_blank">
+                            <span>📥</span> Download PDF
+                        </a>
+                        <a href="Harwich%20Daily%20Hitting%20Report.pdf" class="pdf-button" target="_blank">
+                            <span>🔍</span> Open in New Tab
+                        </a>
+                    </div>
+                </div>
+                <embed src="Harwich%20Daily%20Hitting%20Report.pdf" type="application/pdf" class="pdf-viewer">
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h3 style="margin-bottom: 1rem;">Let's Connect</h3>
+            <p style="margin-bottom: 1.5rem; opacity: 0.9;">
+                I am always looking to improve my reports and to hear the opinions of others. If you have any questions or comments, feel free to reach out!
+            </p>
+            <div class="footer-links">
+                <a href="mailto:svensonjj@gmail.com">Email Me</a>
+                <a href="https://www.linkedin.com/in/john-jj-svenson/" target="_blank">LinkedIn</a>
+                <a href="index.html">Back to Portfolio</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
