@@ -115,6 +115,57 @@
             padding: 4rem 2rem;
         }
 
+        /* About Section */
+        .about-section {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-images {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .about-image {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-content h2 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 968px) {
+            .about-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .about-images {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .about-image {
+                max-width: 200px;
+            }
+        }
+
         section {
             margin-bottom: 4rem;
         }
@@ -274,7 +325,7 @@
             <p class="tagline">Baseball Analytics & Data Science</p>
             <div class="header-divider"></div>
             <p class="credentials">
-                Fourth-year Statistics & Data Science major at UCLA with a passion for transforming baseball data into actionable insights. Currently serving as Head Student Manager and Data Analyst for UCLA Baseball, with prior experience as a Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League (2025 season).
+                Fourth-year Statistics and Data Science major at UCLA with a passion for transforming data into actionable insights. Currently serving as Student Manager and Data Analyst for UCLA Baseball, with professional experience as a Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League (2025 season).
             </p>
         </div>
     </header>
@@ -291,6 +342,22 @@
     </nav>
 
     <main>
+        <section class="about-section">
+            <div class="about-images">
+                <img src="jj-professional.jpg" alt="JJ Svenson professional photo" class="about-image">
+                <img src="jj-ucla-field.jpg" alt="JJ Svenson at UCLA baseball field" class="about-image">
+            </div>
+            <div class="about-content">
+                <h2>About Me</h2>
+                <p>
+                    As Head Student Manager and Data Analyst for UCLA Baseball, I combine my Statistics and Data Science education with hands-on experience to create analytical tools that drive performance improvement. My work spans all aspects of baseball analytics, from pitcher evaluation and sequencing strategy to offensive analysis and defensive metrics.
+                </p>
+                <p>
+                    During the 2025 season, I served as a Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League, where I developed daily reporting systems used by coaches for in-game decision making. I specialize in translating complex Trackman data into clear, actionable insights through custom R programming and machine learning techniques.
+                </p>
+            </div>
+        </section>
+
         <section id="projects">
             <h2>Baseball Analytics Projects</h2>
             <p class="section-intro">
@@ -300,57 +367,57 @@
             <div class="projects-grid">
                 <a href="postgame.html" class="project-card">
                     <div class="project-number">01</div>
-                    <h3>Pitcher Post-Outing Report</h3>
+                    <h3>Pitcher Outing Analysis</h3>
                     <p>Comprehensive R-based report analyzing individual pitcher outings, providing detailed performance metrics and visualizations to evaluate game-by-game effectiveness.</p>
-                    <span class="project-tag">Pitching Analytics</span>
+                    <span class="project-tag">R Programming</span>
                 </a>
 
                 <a href="seasonperformancereport.html" class="project-card">
                     <div class="project-number">02</div>
-                    <h3>Pitcher Season Performance Analysis</h3>
+                    <h3>Seasonal Pitcher Performance</h3>
                     <p>Season-long analysis examining pitcher performance trends, including opponent-specific metrics to identify strengths and areas for improvement.</p>
-                    <span class="project-tag">Pitching Analytics</span>
+                    <span class="project-tag">Statistical Analysis</span>
                 </a>
 
                 <a href="pitchereval.html" class="project-card">
                     <div class="project-number">03</div>
-                    <h3>Pitcher Evaluation Report</h3>
-                    <p>Advanced analytics leveraging Trackman data to evaluate pitcher mechanics, pitch characteristics, and overall effectiveness.</p>
-                    <span class="project-tag">Pitching Analytics</span>
+                    <h3>Trackman Pitcher Evaluation</h3>
+                    <p>Advanced analytics leveraging Trackman data to evaluate pitcher mechanics, pitch characteristics, and overall effectiveness using cutting-edge baseball technology.</p>
+                    <span class="project-tag">Trackman Data</span>
                 </a>
 
                 <a href="similarity.html" class="project-card">
                     <div class="project-number">04</div>
                     <h3>Pitch Similarity Analysis</h3>
                     <p>Comparative study analyzing NCAA pitches with similar characteristics to target pitchers, providing benchmarking data and performance expectations based on historical outcomes.</p>
-                    <span class="project-tag">Pitching Analytics</span>
+                    <span class="project-tag">Comparative Analytics</span>
                 </a>
 
                 <a href="sequencing.html" class="project-card">
                     <div class="project-number">05</div>
-                    <h3>Pitch Sequencing Analysis</h3>
+                    <h3>Pitch Sequencing Intelligence</h3>
                     <p>Strategic analysis of pitch sequencing patterns using Trackman data to identify optimal pitch combinations and sequencing strategies for maximizing effectiveness.</p>
-                    <span class="project-tag">Pitching Analytics</span>
+                    <span class="project-tag">Strategy Analysis</span>
                 </a>
 
                 <a href="dailyhittingreport.html" class="project-card">
                     <div class="project-number">06</div>
                     <h3>Daily Hitting Evaluation</h3>
                     <p>Daily performance reports for team hitters utilizing Trackman data, designed for rapid assessment and immediate feedback to support in-season player development.</p>
-                    <span class="project-tag">Offensive Analytics</span>
+                    <span class="project-tag">Performance Tracking</span>
                 </a>
 
                 <a href="catching.html" class="project-card">
                     <div class="project-number">07</div>
-                    <h3>Catcher Evaluation Report</h3>
-                    <p>Specialized evaluation report for catchers using Trackman data, assessing receiving skills and throwing metrics.</p>
+                    <h3>Catcher Performance Metrics</h3>
+                    <p>Specialized evaluation system for catchers using Trackman data, assessing receiving skills, game-calling effectiveness, and defensive contributions.</p>
                     <span class="project-tag">Defensive Analytics</span>
                 </a>
 
                 <a href="hitting.html" class="project-card">
                     <div class="project-number">08</div>
-                    <h3>Hitter Evaluation Analysis</h3>
-                    <p>A brief hitter evaluation using Trackman data to analyze contact quality and plate discipline.</p>
+                    <h3>Hitter Performance Analysis</h3>
+                    <p>Comprehensive individual hitter evaluation using Trackman data to analyze swing mechanics, plate discipline, and overall offensive production.</p>
                     <span class="project-tag">Offensive Analytics</span>
                 </a>
             </div>
@@ -359,7 +426,7 @@
         <section id="contact">
             <h2>Let's Connect</h2>
             <p class="section-intro">
-                I'm always eager to discuss baseball analytics or receive feedback on my work. Whether you're a coach, front office executive, analyst, or fellow baseball enthusiast, I'd love to hear from you.
+                I'm always eager to discuss baseball analytics, collaborate on projects, or receive feedback on my work. Whether you're a coach, analyst, or fellow baseball enthusiast, I'd love to hear from you.
             </p>
         </section>
     </main>
@@ -369,9 +436,10 @@
             <div class="footer-links">
                 <a href="mailto:svensonjj@gmail.com">Email Me</a>
                 <a href="https://www.linkedin.com/in/john-jj-svenson/" target="_blank">LinkedIn</a>
+                <a href="https://github.com/jjsvenson/jj-svenson-baseball-analytics" target="_blank">View on GitHub</a>
             </div>
             <p class="footer-text">
-                JJ Svenson | Head Student Manager and Data Analyst - UCLA Baseball | UCLA Statistics & Data Science - Class of 2026
+                © 2025 JJ Svenson. Dedicated to advancing baseball through data-driven insights and analytical excellence.
             </p>
         </div>
     </footer>
