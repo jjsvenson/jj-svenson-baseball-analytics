@@ -9,7 +9,7 @@ This report was created with the goal of evaluating a pitcher and his stuff. The
 ### Pitcher Evaluation Analysis
 In this project, I wrote code in R to create a report analyzing a pitcher and their stuff when given Trackman data.
 
-- [View the Project's Outputted PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/42d9660e7880d8b250d6dc44f970c38a32696731/Iowa%202025%20Pitcher%20Evaluations.pdf)
+- [View the Project's Outputted PDF](https://github.com/jjsvenson/jj-svenson-baseball-analytics/blob/e84aaf7a0340ef1fd1d0006a57a2fa0c449c9532/Iowa%202025%20Pitcher%20Evaluations.pdf)
 - Technologies used: R and Trackman
 
 [Home Page](index.md)
