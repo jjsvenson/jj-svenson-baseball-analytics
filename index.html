@@ -122,15 +122,9 @@
             padding: 3rem;
             margin-bottom: 4rem;
             display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 3rem;
+            grid-template-columns: 250px 1fr 250px;
+            gap: 2.5rem;
             align-items: center;
-        }
-
-        .about-images {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
         }
 
         .about-image {
@@ -156,13 +150,9 @@
                 text-align: center;
             }
 
-            .about-images {
-                flex-direction: row;
-                justify-content: center;
-            }
-
             .about-image {
-                max-width: 200px;
+                max-width: 250px;
+                margin: 0 auto;
             }
         }
 
@@ -343,10 +333,7 @@
 
     <main>
         <section class="about-section">
-            <div class="about-images">
-                <img src="jj-professional.jpg" alt="JJ Svenson professional photo" class="about-image">
-                <img src="jj-ucla-field.jpg" alt="JJ Svenson at UCLA baseball field" class="about-image">
-            </div>
+            <img src="jj-professional.jpg" alt="JJ Svenson professional photo" class="about-image">
             <div class="about-content">
                 <h2>About Me</h2>
                 <p>
@@ -356,6 +343,7 @@
                     During the 2025 season, I served as a Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League, where I developed daily reporting systems used by coaches for in-game decision making. I specialize in translating complex Trackman data into clear, actionable insights through custom R programming and machine learning techniques.
                 </p>
             </div>
+            <img src="jj-ucla-field.jpg" alt="JJ Svenson at UCLA baseball field" class="about-image">
         </section>
 
         <section id="projects">
