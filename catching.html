@@ -280,7 +280,7 @@
         <div class="header-content">
             <a href="index.html" class="back-link">Back to Portfolio</a>
             <h1>Catcher Evaluation Report</h1>
-            <p class="subtitle">Comprehensive defensive analytics using Trackman data</p>
+            <p class="subtitle">Defensive analytics for catchers using Trackman data - Can be used for scouting, internal player evaluation/development, or as a post-game report</p>
         </div>
     </header>
 
@@ -305,6 +305,15 @@
             <p class="description-text">
                 My report formats this data in an understandable way, sorted by throws to each base. For each base, you are able to see the total throwing statistics, throwing statistics for pitches in the zone, throwing statistics for pitches out of the zone, and throwing statistics for whiffs. All of these data tables are sorted by pitch type. Each base also has an accuracy plot that is sorted by pitch type. These accuracy plots are color coded by height, allowing the viewer to better visualize the accuracy of the throw.
             </p>
+            <p class="description-text">
+                For each catcher there is also a framing plot which includes a scatter plot of pitch locations relative to the zone, color coded by strike/ball with different shapes corresponding to each pitch type. This helps visualize framing and a catcher's ability to steal strikes on pitches outside the zone. Their receiving performance is also depicted by a heat map that illustrates strike percentage for pitches caught by the catcher without a swing.
+            </p>
+            <p class="description-text">
+                This page also includes framing statistics such as strikes stolen (and percentage), strikes lost (and percentage), framing runs saved, framing runs saved per 9 innings, and SL+ (Strikes Looking Plus). The SL+ is derived from my called strike probability model trained using a XGBoost in R. An SL+ of 100 means a catcher is getting the expected number of called strikes, 105 means they are getting 5% more strikes than expected, and so on.
+            </p>
+            <p class="description-text">
+                For better interpretability, statistics where I felt it would be useful for them to be compared to league averages are automatically color coded (on a blue to red scale where red is good for the catcher) based on the rolling NCAA average and standard deviation for each statistic (SL+ is color coded based on the 100 scale).
+            </p>
 
             <h3>Key Features</h3>
             <div class="features-grid">
@@ -314,7 +323,7 @@
                 </div>
                 <div class="feature-card">
                     <h4>Framing Analysis</h4>
-                    <p>Scatter plots showing pitch locations with strike/ball outcomes, color-coded by pitch type to visualize framing effectiveness.</p>
+                    <p>Scatter plots showing pitch locations color-coded with strike/ball outcomes to visualize framing effectiveness.</p>
                 </div>
                 <div class="feature-card">
                     <h4>Advanced Metrics</h4>
@@ -333,23 +342,13 @@
                     <p>Color-coded statistics comparing performance to rolling NCAA averages and standard deviations.</p>
                 </div>
             </div>
-
-            <h3>Statistical Insights</h3>
-            <p class="description-text">
-                For each catcher there is also a framing plot which includes a scatter plot of pitch locations relative to the zone, color coded by strike/ball with different shapes corresponding to each pitch type. This helps visualize framing and a catcher's ability to steal strikes on pitches outside the zone. Their receiving performance is also depicted by a heat map that illustrates strike percentage for pitches caught by the catcher without a swing.
-            </p>
-            <p class="description-text">
-                This page also includes framing statistics such as strikes stolen (and percentage), strikes lost (and percentage), framing runs saved, framing runs saved per 9 innings, and SL+ (Strikes Looking Plus). The SL+ is derived from my called strike probability model trained using a XGBoost in R. An SL+ of 100 means a catcher is getting the expected number of called strikes, 105 means they are getting 5% more strikes than expected, and so on.
-            </p>
-            <p class="description-text">
-                For better interpretability, statistics where I felt it would be useful for them to be compared to league averages are automatically color coded (on a blue to red scale where red is good for the catcher) based on the rolling NCAA average and standard deviation for each statistic (SL+ is color coded based on the 100 scale).
-            </p>
+            
         </section>
 
         <section class="section">
             <h2>Example Output: Iowa 2025 Season</h2>
             <p class="description-text">
-                The following output was made with data from the Iowa 2025 baseball season, demonstrating the report's comprehensive analytical capabilities. My code works with any Trackman CSV, making it adaptable for any team or league using Trackman technology.
+                The following output was made with data from the Iowa 2025 baseball season. My code works with any Trackman CSV, making it adaptable for any team or league using Trackman technology.
             </p>
 
             <div class="pdf-container">
