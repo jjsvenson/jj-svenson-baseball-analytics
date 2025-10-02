@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitch Similarity Report | JJ Svenson</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2c5282;
+            --accent-color: #c53030;
+            --text-dark: #1a202c;
+            --text-light: #4a5568;
+            --background: #ffffff;
+            --card-background: #f7fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--background);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .project-overview {
+            background: var(--card-background);
+            border-left: 4px solid var(--accent-color);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+        }
+
+        .project-overview h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-overview p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section h3 {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+            font-weight: 600;
+        }
+
+        .description-text {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* Similarity Criteria */
+        .criteria-box {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .criteria-box h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .criteria-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1.25rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .criteria-metric {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .criteria-range {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Concept Explanation */
+        .concept-highlight {
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid var(--accent-color);
+        }
+
+        .concept-highlight h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .concept-highlight p {
+            color: var(--text-dark);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* Metrics Section */
+        .metrics-section {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .metrics-section h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.875rem;
+            text-align: center;
+        }
+
+        .metric-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-description {
+            color: var(--text-light);
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        /* Color Coding */
+        .color-coding-note {
+            background: white;
+            border-left: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .color-coding-note p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 0.75rem;
+        }
+
+        .color-coding-note p:last-child {
+            margin-bottom: 0;
+        }
+
+        .color-scale {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--card-background);
+            border-radius: 8px;
+        }
+
+        .scale-bar {
+            flex: 1;
+            height: 30px;
+            background: linear-gradient(to right, #fc8181, #fbd38d, #68d391);
+            border-radius: 4px;
+        }
+
+        .scale-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        /* PDF Viewer */
+        .pdf-container {
+            background: var(--card-background);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pdf-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .pdf-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .pdf-button {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pdf-button:hover {
+            background: var(--secondary-color);
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 800px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border: 2px solid white;
+            border-radius: 6px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .footer-links a:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .pdf-viewer {
+                height: 600px;
+            }
+
+            .criteria-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .color-scale {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="back-link">Back to Portfolio</a>
+            <h1>Pitch Similarity Report</h1>
+            <p class="subtitle">NCAA-wide comparative analysis of pitch shape and performance</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="project-overview">
+            <h2>Project Overview</h2>
+            <p>
+                Using R as a tool and Trackman CSVs as my data, I was able to craft a report that analyzes the results of all NCAA pitches with similar shape and metrics to a target pitcher's pitches, providing context for how their stuff performs across college baseball.
+            </p>
+            <div class="tech-tags">
+                <span class="tech-tag">R Programming</span>
+                <span class="tech-tag">Trackman Data</span>
+                <span class="tech-tag">NCAA Comparison</span>
+                <span class="tech-tag">Pitch Shape Analysis</span>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>Project Description</h2>
+            <p class="description-text">
+                This report was created with the goal of evaluating a pitcher and how his stuff performs across NCAA baseball. Rather than simply looking at how a pitcher's own pitches perform, this analysis provides crucial context by comparing results to all similar pitches thrown throughout college baseball.
+            </p>
+
+            <div class="concept-highlight">
+                <h3>Why Pitch Similarity Matters</h3>
+                <p>
+                    Understanding how similar pitches perform across NCAA baseball provides invaluable context for evaluating a pitcher's effectiveness. If a pitcher throws a slider with certain characteristics, this report shows how all sliders with those same characteristics have performed against college hitters. This helps answer critical questions: Is the pitch underperforming relative to similar offerings? Are the results in line with expectations based on the pitch's shape and velocity?
+                </p>
+                <p>
+                    This comparative approach helps identify whether poor results are due to pitch execution, sequencing, or simply the inherent quality of the pitch itself. It also highlights when a pitch is overperforming, which may indicate excellent command or deception even if the raw metrics don't look elite.
+                </p>
+            </div>
+
+            <div class="criteria-box">
+                <h3>Similarity Criteria</h3>
+                <p class="description-text" style="margin-bottom: 1.5rem;">
+                    The report includes a table for each pitch type a pitcher throws, split by batter handedness. Pitches are considered "similar" if they fall within these ranges:
+                </p>
+                <div class="criteria-grid">
+                    <div class="criteria-item">
+                        <div class="criteria-metric">Induced Vertical Break</div>
+                        <div class="criteria-range">Within ±1.5 inches of IVB</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-metric">Horizontal Break</div>
+                        <div class="criteria-range">Within ±1.5 inches of HB</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-metric">Velocity</div>
+                        <div class="criteria-range">Within ±1 mph</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-metric">Release Height</div>
+                        <div class="criteria-range">Within ±3 inches</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-metric">Release Side</div>
+                        <div class="criteria-range">Within ±3 inches</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics-section">
+                <h3>Performance Metrics Analyzed</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-name">Pitch Count</div>
+                        <div class="metric-description">Number of similar pitches</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Swing %</div>
+                        <div class="metric-description">Overall swing rate</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">In-Zone Swing %</div>
+                        <div class="metric-description">Swing rate on pitches in the zone</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Whiff %</div>
+                        <div class="metric-description">Overall miss rate on swings</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">In-Zone Whiff %</div>
+                        <div class="metric-description">Miss rate on swings at pitches in the zone</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Chase %</div>
+                        <div class="metric-description">Out-of-zone swing rate</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Swinging Strike %</div>
+                        <div class="metric-description">Swing and miss frequency</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">CSW %</div>
+                        <div class="metric-description">Called strikes + whiffs</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Ball in Play %</div>
+                        <div class="metric-description">Rate of balls hit in play</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Out % on BIP</div>
+                        <div class="metric-description">Out rate on balls hit in play</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Ground Ball %</div>
+                        <div class="metric-description">GB rate on contact</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Line Drive %</div>
+                        <div class="metric-description">LD rate on contact</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Fly Ball %</div>
+                        <div class="metric-description">FB rate on contact</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Pop Up %</div>
+                        <div class="metric-description">PU rate on contact</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Bullet %</div>
+                        <div class="metric-description">Hard contact rate (90+ mph, 0-35°)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Avg Exit Velocity</div>
+                        <div class="metric-description">Mean exit velocity</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Avg Launch Angle</div>
+                        <div class="metric-description">Mean launch angle</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="color-coding-note">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">NCAA-Benchmarked Color Coding</h3>
+                <p>
+                    For better interpretability, statistics where I felt it would be useful for them to be compared to league averages are automatically color coded on a red to green scale where green is good for the pitcher. The coding is based on the rolling NCAA average and standard deviation for each statistic.
+                </p>
+                <div class="color-scale">
+                    <span class="scale-label">Below Average</span>
+                    <div class="scale-bar"></div>
+                    <span class="scale-label">Above Average</span>
+                </div>
+                <p style="margin-top: 1rem;">
+                    The color scales are different for each pitch type because, for example, league average whiff percentage for a fastball is lower than league average whiff percentage for a slider. Therefore, each pitch type is color coded based on its custom scale, providing pitch-type-specific context.
+                </p>
+            </div>
+
+            <h3>Strategic Applications</h3>
+            <p class="description-text">
+                This report is invaluable for pitcher development and evaluation. It helps coaches and pitchers understand whether results are meeting expectations based on pitch characteristics. If a slider with good shape and velocity is underperforming compared to similar sliders across NCAA baseball, it may indicate issues with command, sequencing, or tunneling. Conversely, if results are exceeding the performance of similar pitches, it validates the pitcher's execution and deception.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Example Output: Iowa 2025 Season</h2>
+            <p class="description-text">
+                The attached report includes all of the data from the 2025 Iowa baseball season, providing comprehensive similarity analysis for the entire pitching staff. The code can be used to analyze any Trackman data, making it adaptable for any team or league.
+            </p>
+
+            <div class="pdf-container">
+                <div class="pdf-header">
+                    <div class="pdf-title">Iowa 2025 Similarity Report</div>
+                    <div class="pdf-actions">
+                        <a href="Iowa%202025%20Similarity%20Report.pdf" class="pdf-button" target="_blank">
+                            <span>📥</span> Download PDF
+                        </a>
+                        <a href="Iowa%202025%20Similarity%20Report.pdf" class="pdf-button" target="_blank">
+                            <span>🔍</span> Open in New Tab
+                        </a>
+                    </div>
+                </div>
+                <embed src="Iowa%202025%20Similarity%20Report.pdf" type="application/pdf" class="pdf-viewer">
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h3 style="margin-bottom: 1rem;">Let's Connect</h3>
+            <p style="margin-bottom: 1.5rem; opacity: 0.9;">
+                I am always looking to improve my reports and to hear the opinions of others. If you have any questions or comments, feel free to reach out!
+            </p>
+            <div class="footer-links">
+                <a href="mailto:svensonjj@gmail.com">Email Me</a>
+                <a href="https://www.linkedin.com/in/john-jj-svenson/" target="_blank">LinkedIn</a>
+                <a href="index.html">Back to Portfolio</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
