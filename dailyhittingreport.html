@@ -221,6 +221,48 @@
             font-weight: bold;
         }
 
+        /* Color Coding */
+        .color-coding-note {
+            background: white;
+            border-left: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .color-coding-note p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 0.75rem;
+        }
+
+        .color-coding-note p:last-child {
+            margin-bottom: 0;
+        }
+
+        .color-scale {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--card-background);
+            border-radius: 8px;
+        }
+
+        .scale-bar {
+            flex: 1;
+            height: 30px;
+            background: linear-gradient(to right, #fc8181, #fbd38d, #68d391);
+            border-radius: 4px;
+        }
+
+        .scale-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
         /* PDF Viewer */
         .pdf-container {
             background: var(--card-background);
@@ -346,7 +388,7 @@
             <div class="tech-tags">
                 <span class="tech-tag">R Programming</span>
                 <span class="tech-tag">Trackman Data</span>
-                <span class="tech-tag">Daily Offensive Analytics</span>
+                <span class="tech-tag">Daily Analytics</span>
                 <span class="tech-tag">Cape Cod Baseball League</span>
             </div>
         </div>
@@ -458,6 +500,18 @@
                             Strikeout percentage. Key metric for evaluating contact consistency and plate discipline.
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="color-coding-note">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">League-Benchmarked Color Coding</h3>
+                <p>
+                    The report is color coded based on league averages for better interpretability, allowing coaches and players to quickly identify strengths and areas for improvement relative to the competition.
+                </p>
+                <div class="color-scale">
+                    <span class="scale-label">Below Average</span>
+                    <div class="scale-bar"></div>
+                    <span class="scale-label">Above Average</span>
                 </div>
             </div>
         </section>
