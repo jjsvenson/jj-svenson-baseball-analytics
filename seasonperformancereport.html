@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitcher Season Performance Report | JJ Svenson</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2c5282;
+            --accent-color: #c53030;
+            --text-dark: #1a202c;
+            --text-light: #4a5568;
+            --background: #ffffff;
+            --card-background: #f7fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--background);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .project-overview {
+            background: var(--card-background);
+            border-left: 4px solid var(--accent-color);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+        }
+
+        .project-overview h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-overview p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section h3 {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+            font-weight: 600;
+        }
+
+        .description-text {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* Key Features */
+        .features-highlight {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .features-highlight h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1.25rem;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .feature-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Team Analysis Section */
+        .team-analysis-box {
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid var(--accent-color);
+        }
+
+        .team-analysis-box h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .team-analysis-box p {
+            color: var(--text-dark);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .team-analysis-box ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+
+        .team-analysis-box li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-dark);
+        }
+
+        .team-analysis-box li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* Report Components */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin: 2rem 0;
+        }
+
+        .component-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .component-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .component-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .component-card h4 {
+            color: var(--primary-color);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* PDF Viewer */
+        .pdf-container {
+            background: var(--card-background);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pdf-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .pdf-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .pdf-button {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pdf-button:hover {
+            background: var(--secondary-color);
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 800px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border: 2px solid white;
+            border-radius: 6px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .footer-links a:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .pdf-viewer {
+                height: 600px;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+
+            .components-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="back-link">Back to Portfolio</a>
+            <h1>Pitcher Season Performance Report</h1>
+            <p class="subtitle">Comprehensive season analysis with team-by-team matchup breakdowns</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="project-overview">
+            <h2>Project Overview</h2>
+            <p>
+                Using R as a tool and Trackman CSVs as my data, I was able to craft a report that analyzes a pitcher's season and how they pitched versus specific teams, providing valuable scouting insights and performance patterns.
+            </p>
+            <div class="tech-tags">
+                <span class="tech-tag">R Programming</span>
+                <span class="tech-tag">Trackman Data</span>
+                <span class="tech-tag">Season-Long Analysis</span>
+                <span class="tech-tag">Team Matchups</span>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>Project Description</h2>
+            <p class="description-text">
+                This report was created with the goal of evaluating a pitcher's season and performance against different teams. It provides a comprehensive view of how a pitcher has performed throughout the year while breaking down their effectiveness against specific opponents.
+            </p>
+
+            <h3>Season Summary Components</h3>
+            <p class="description-text">
+                The report begins with comprehensive season statistics including pitches thrown, batters faced, strikeouts, walks, hits, extra-base hits, max velocity, whiffs, strike percentage, CSW%, pitch win performance in 3-2 and 1-1 counts, and negative to positive transitions.
+            </p>
+
+            <div class="components-grid">
+                <div class="component-card">
+                    <h4>Pitch Metrics Table</h4>
+                    <p>Usage and detailed metrics including velocity, spin, extension, break, tilt, zone-adjusted VAA, release point, and arm angle approximation.</p>
+                </div>
+
+                <div class="component-card">
+                    <h4>Results Analysis</h4>
+                    <p>Zone percentage, chase rate, and batted ball outcomes including ground balls, line drives, and fly balls.</p>
+                </div>
+
+                <div class="component-card">
+                    <h4>Movement Plot</h4>
+                    <p>Pitch movement visualization with arm angle annotations showing the complete arsenal profile.</p>
+                </div>
+
+                <div class="component-card">
+                    <h4>Release Point Plot</h4>
+                    <p>Consistency analysis of release mechanics across all pitch types throughout the season.</p>
+                </div>
+
+                <div class="component-card">
+                    <h4>Location Analysis</h4>
+                    <p>Comprehensive pitch location visualizations showing command patterns and tendencies.</p>
+                </div>
+
+                <div class="component-card">
+                    <h4>Whiff Locations</h4>
+                    <p>Detailed analysis of where swings and misses are generated across the strike zone.</p>
+                </div>
+            </div>
+
+            <div class="team-analysis-box">
+                <h3>Team-by-Team Matchup Analysis</h3>
+                <p>
+                    One of the most valuable features of this report is the comprehensive team-by-team breakdown. Each opposing team receives its own dedicated page that analyzes how the pitcher performed against that specific opponent throughout the season.
+                </p>
+                <ul>
+                    <li>Individual batter performance statistics versus the pitcher</li>
+                    <li>Left-handed hitter (LHH) splits for each team</li>
+                    <li>Right-handed hitter (RHH) splits for each team</li>
+                    <li>Complete matchup history with outcomes and patterns</li>
+                    <li>Strategic insights for future matchups and game planning</li>
+                </ul>
+                <p style="margin-top: 1rem;">
+                    This level of detail allows pitchers and coaches to identify which opponents they've been most effective against, which batters pose the greatest challenges, and how to adjust their approach based on platoon advantages. It's an invaluable tool for scouting preparation and in-game strategy.
+                </p>
+            </div>
+
+            <h3>Applications and Use Cases</h3>
+            <div class="features-highlight">
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-title">End-of-Season Review</div>
+                        <div class="feature-description">Comprehensive evaluation of a pitcher's complete body of work for the season.</div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-title">Scouting Preparation</div>
+                        <div class="feature-description">Detailed matchup history when facing the same teams in playoffs or future series.</div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-title">Opponent Tendencies</div>
+                        <div class="feature-description">Identify which teams struggle against specific pitch types or approach patterns.</div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-title">Strategic Planning</div>
+                        <div class="feature-description">Use platoon splits to optimize pitcher deployment and matchup advantages.</div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-title">Performance Trends</div>
+                        <div class="feature-description">Track how effectiveness has varied against different competition levels and styles.</div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-title">Player Development</div>
+                        <div class="feature-description">Identify areas of strength and opportunities for improvement based on season-long data.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Example Output: Reece Beuter Season Report</h2>
+            <p class="description-text">
+                The attached report is a season performance analysis for Iowa baseball's Reece Beuter, showcasing the comprehensive nature of the evaluation and the detailed team-by-team breakdowns that make this report so valuable for strategic planning.
+            </p>
+
+            <div class="pdf-container">
+                <div class="pdf-header">
+                    <div class="pdf-title">Reece Beuter Season Performance Report</div>
+                    <div class="pdf-actions">
+                        <a href="Reece%20Beuter%20Season%20Performance%20Report.pdf" class="pdf-button" target="_blank">
+                            <span>📥</span> Download PDF
+                        </a>
+                        <a href="Reece%20Beuter%20Season%20Performance%20Report.pdf" class="pdf-button" target="_blank">
+                            <span>🔍</span> Open in New Tab
+                        </a>
+                    </div>
+                </div>
+                <embed src="Reece%20Beuter%20Season%20Performance%20Report.pdf" type="application/pdf" class="pdf-viewer">
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h3 style="margin-bottom: 1rem;">Let's Connect</h3>
+            <p style="margin-bottom: 1.5rem; opacity: 0.9;">
+                I am always looking to improve my reports and to hear the opinions of others. If you have any questions or comments, feel free to reach out!
+            </p>
+            <div class="footer-links">
+                <a href="mailto:svensonjj@gmail.com">Email Me</a>
+                <a href="https://www.linkedin.com/in/john-jj-svenson/" target="_blank">LinkedIn</a>
+                <a href="index.html">Back to Portfolio</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
