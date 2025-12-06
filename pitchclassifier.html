@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitch Type Classifier | JJ Svenson</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2c5282;
+            --accent-color: #c53030;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --text-dark: #1a202c;
+            --text-light: #4a5568;
+            --background: #ffffff;
+            --card-background: #f7fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--background);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        .back-link::before {
+            content: "← ";
+        }
+
+        .project-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .overview {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .overview h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .overview p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .highlight-box {
+            background: #e6f7ff;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        ul {
+            margin-left: 2rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .workflow-steps {
+            counter-reset: step-counter;
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .workflow-steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .workflow-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--primary-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid white;
+            border-radius: 8px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .footer-links a:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .project-title {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="back-link">Back to Portfolio</a>
+            <h1 class="project-title">Pitch Type Classifier</h1>
+            <p class="project-subtitle">Machine Learning-Powered Pitch Classification System with Interactive Data Cleaning</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="nav-brand">JJ SVENSON</a>
+            <div class="nav-links">
+                <a href="index.html#projects">Projects</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="https://github.com/jjsvenson/jj-svenson-baseball-analytics" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="overview">
+            <h2>🎯 Project Overview</h2>
+            <p>
+                An advanced R Shiny application that automatically classifies baseball pitch types from TrackMan data using hierarchical XGBoost models, with intelligent arsenal correction and an interactive interface for manual data cleaning. The system achieves 93.6% accuracy through 5-fold cross-validation while providing analysts with complete control over the final dataset through visual verification and manually pitch tag editing capabilities.
+            </p>
+            <p>
+                Built to solve the real-world problem of cleaning large amounts of Trackman data for the purpose of scouting reports and machine learning model training.
+            </p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <span class="stat-value">93.6%</span>
+                <span class="stat-label">5-Fold Cross-Validation</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">5</span>
+                <span class="stat-label">XGBoost Classifiers</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">4D</span>
+                <span class="stat-label">Outlier Detection</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">68</span>
+                <span class="stat-label">Engineered Features</span>
+            </div>
+        </div>
+
+        <section>
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">1</div>
+                    <h4>Hierarchical Classification</h4>
+                    <p>Five-model XGBoost architecture with specialized classifiers for different pitch type groups, achieving 93.6% accuracy through 5-fold cross-validation on Big10 conference data.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">2</div>
+                    <h4>Intelligent Arsenal Correction</h4>
+                    <p>Similarity-based centroid comparison merges pitch types with nearly identical movement profiles (within 4 mph, 4" IVB/HB, 400 RPM), further cleaning the data based on arsenal-specific context.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">3</div>
+                    <h4>4D Outlier Detection</h4>
+                    <p>Mahalanobis distance-based flagging using velocity, vertical break, horizontal break, and spin rate. Logic only flags pitches closer to other clusters, reducing false positives.</p>
+                </div>
+
+
+                <div class="feature-card">
+                    <div class="feature-icon">4</div>
+                    <h4>Interactive Data Explorer</h4>
+                    <p>Complete filtering interface with multi-select capabilities, range sliders, and "Show Only Flagged" mode. Export to CSV/Excel with one click.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">5</div>
+                    <h4>Pitcher Movement Plot Explorer</h4>
+                    <p>Interactive Plotly movement charts with click-and-drag selection, team-specific and pitcher-specific filtering, and instant navigation from flagged pitches to visual context. Allows for easy manual data cleaning directly on the movement plot.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">6</div>
+                    <h4>Flexible Editing Workflow</h4>
+                    <p>Full manual editing of both flagged and regular pitches in the data explorer and on movement plots. Ability to undo changes (50-change history).</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🔧 Technical Implementation</h2>
+            
+            <h3>Machine Learning Architecture</h3>
+            <p>The classification system uses a hierarchical approach with five XGBoost models:</p>
+            <ul>
+                <li><strong>Model 1:</strong> FastSink vs OffSpeed vs Breaking (three-way pitch group classification)</li>
+                <li><strong>Model 2:</strong> Fastball vs Sinker (within fastball group)</li>
+                <li><strong>Model 3:</strong> ChangeUp vs Splitter (within offspeed group, rare pitch boosting)</li>
+                <li><strong>Model 4:</strong> Curveball vs Cutter vs HorizontalBreaker (within breaking ball group)</li>
+                <li><strong>Model 5:</strong> Slider vs Sweeper (splits HorizontalBreaker category, specialized features)</li>
+            </ul>
+            <p style="margin-top: 1rem; color: var(--text-light);">
+                Additionally, an optional arsenal correction system may be implemented. Next, a 4D Mahalanobis distance-based flagging system identifies potentially mislabeled pitches after classification. Rare pitch types (Splitter, Cutter, Sweeper) receive boosted class weights during training to address class imbalance.
+            </p>
+
+            <div class="highlight-box">
+                <h4>Feature Engineering</h4>
+                <p>68 engineered features including movement characteristics (IVB, HB, spin), velocity profiles, pitcher-relative metrics (Z-scores, velocity ratios), release point characteristics, and spatial clustering indicators. Movement features weighted more heavily than velocity for better pitch type discrimination.</p>
+            </div>
+
+            <h3>Arsenal Correction (4D Similarity-Based)</h3>
+            <p>For each pitcher with 30+ pitches, the system:</p>
+            <ol class="workflow-steps">
+                <li>Calculates 4D centroids for each pitch type (mean velocity, IVB, HB, spin rate)</li>
+                <li>Compares all pairs of pitch types within pitcher's arsenal using Euclidean distance</li>
+                <li>Flags pairs as "too similar" if ALL four differences are below thresholds (4 mph, 4", 4", 400 RPM)</li>
+                <li>Merges the less common type into the more common type</li>
+                <li>Reduces arsenals with too many pitch types to a realistic arsenal (~1% of pitches affected)</li>
+            </ol>
+
+            <h3>Outlier Detection & Flagging</h3>
+            <p>Conservative 4D Mahalanobis distance approach:</p>
+            <ul>
+                <li>Calculate distance from pitch to its labeled type's cluster centroid (4D space: velo, IVB, HB, spin)</li>
+                <li>Flag if distance > 3.7 standard deviations (chi-squared 99.9% threshold for 4 DOF)</li>
+                <li>Only keep flag if pitch is closer to a different pitch type's cluster (prevents aggressive flagging)</li>
+                <li>Conservative logic designed to minimize false positives while identifying clear outliers</li>
+                <li>Result: ~0.5-1% flagging rate on typical datasets</li>
+            </ul>
+            <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;">
+                <strong>Note on spin rate:</strong> While spin is included in the 4D detection, Trackman spin measurements can occasionally be noisy and include misreads. The system's conservative "closer to another cluster" requirement helps filter out spin-driven false positives where movement and velocity profiles are normal.
+            </p>
+
+            <div class="tech-stack">
+                <span class="tech-tag">R / R Shiny</span>
+                <span class="tech-tag">XGBoost</span>
+                <span class="tech-tag">Tidyverse</span>
+                <span class="tech-tag">Plotly</span>
+                <span class="tech-tag">DT (DataTables)</span>
+                <span class="tech-tag">Centroid Clustering</span>
+                <span class="tech-tag">Mahalanobis Distance</span>
+                <span class="tech-tag">5-Fold Cross-Validation</span>
+            </div>
+        </section>
+
+        <section>
+            <h2>Application Demonstration</h2>
+            <p>Watch the Pitch Type Classifier in action, showcasing the complete workflow from data upload to final export:</p>
+            
+            <div style="max-width: 900px; margin: 2rem auto; background: var(--card-background); padding: 2rem; border-radius: 12px;">
+                
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+                    <iframe 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                        src="https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p style="text-align: center; margin-top: 1rem; color: var(--text-light); font-size: 0.9rem;">
+                    (Coming soon!): Demo video showing data upload, classification, flagging review, and manual editing workflow
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Features Showcase</h2>
+            <p>Key interface components and functionality:</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <!-- Screenshot 1: Data Explorer -->
+                <div style="background: var(--card-background); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color);">
+                    
+                    <img src="images/data-explorer.png" alt="Data Explorer Interface" style="width: 100%; height: auto; display: block;">
+                    <div style="padding: 1.5rem;">
+                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Data Explorer</h4>
+                        <p style="color: var(--text-light); font-size: 0.95rem;">Advanced filtering, multi-select editing, and "Show Only Flagged" mode for efficient data review.</p>
+                    </div>
+                </div>
+
+                <!-- Screenshot 2: Visual Verification -->
+                <div style="background: var(--card-background); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color);">
+                    
+                    <img src="images/pitcher-explorer.png" alt="Interactive Movement Plot" style="width: 100%; height: auto; display: block;">
+                    <div style="padding: 1.5rem;">
+                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Visual Verification</h4>
+                        <p style="color: var(--text-light); font-size: 0.95rem;">Interactive Plotly charts showing pitch movement with click-and-drag selection for manual corrections.</p>
+                    </div>
+                </div>
+
+                <!-- Screenshot 3: Flagging System -->
+                <div style="background: var(--card-background); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color);">
+                    
+                    <img src="images/flagged-pitches.png" alt="Flagging System" style="width: 100%; height: auto; display: block;">
+                    <div style="padding: 1.5rem;">
+                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">4D Outlier Flagging</h4>
+                        <p style="color: var(--text-light); font-size: 0.95rem;">Conservative flagging with detailed reasons and suggestions, Accept/Reject options for batch processing.</p>
+                    </div>
+                </div>
+
+                <!-- Screenshot 4: Arsenal Summary -->
+                <div style="background: var(--card-background); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color);">
+                    
+                    <img src="images/data-summary.png" alt="Data Summary Stats" style="width: 100%; height: auto; display: block;">
+                    <div style="padding: 1.5rem;">
+                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Real-Time Statistics</h4>
+                        <p style="color: var(--text-light); font-size: 0.95rem;">Live stats showing total pitches, arsenal corrections, flagged count, and manual edits.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h2>📊 Complete Workflow</h2>
+            <ol class="workflow-steps">
+                <li><strong>Upload TrackMan CSV:</strong> System automatically loads and processes data (max 100 MB)</li>
+                <li><strong>Classification:</strong> Hierarchical XGBoost models classify all pitches (< 10 seconds)</li>
+                <li><strong>Arsenal Correction:</strong> Centroid-based similarity merging reduces inflated arsenals (~1% of pitches)</li>
+                <li><strong>Outlier Flagging:</strong> 4D Mahalanobis detection flags suspicious pitches (~0.7% of pitches)</li>
+                <li><strong>Interactive Review:</strong> Data Explorer shows all flagged pitches with suggestions</li>
+                <li><strong>Visual Verification:</strong> Click "View in Pitcher Explorer" to see pitch in movement plot context</li>
+                <li><strong>Batch or Individual Editing:</strong> Accept/Reject all or selected flagged pitches, or manual edit in the data explorer or directly in the movement plot</li>
+                <li><strong>Download Clean Data:</strong> Export final classified dataset with all corrections applied</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Key Innovations</h2>
+            
+            <div class="highlight-box">
+                <h4>Conservative Flagging Logic</h4>
+                <p>Unlike aggressive outlier detection that flags everything outside normal ranges, this system only flags pitches that are BOTH outliers AND closer to a different pitch type's cluster. This reduces false positives while maintaining high recall for true mislabels.</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>4D Arsenal Correction</h4>
+                <p>Automatically corrects pitcher arsenals to reduce redunant model predictions (such as a pitcher that was predicted to have both a slider and cutter that are identical).</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Integrated Visual Workflow</h4>
+                <p>Rather than forcing users to choose between automated classification and manual editing, the system seamlessly integrates both. Analysts can trust the algorithm for obvious cases, verify uncertain ones visually, and override when domain knowledge suggests otherwise.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>📈 Performance & Validation</h2>
+            <p><strong>Training Approach:</strong> 5-fold cross-validation on Big 10 conference data (18,872 pitches)</p>
+            
+            <div class="stats-grid" style="margin-top: 2rem;">
+                <div class="stat-box">
+                    <span class="stat-value">93.6%</span>
+                    <span class="stat-label">Cross-Validation Accuracy</span>
+                </div>
+                
+                <div class="stat-box">
+                    <span class="stat-value">~1%</span>
+                    <span class="stat-label">Flagging Rate</span>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h2>Learning & Development</h2>
+            <p>Key insights from the iterative development process:</p>
+            <ul>
+                <li><strong>Pitcher-Aware Corrections:</strong> The same velocity can represent different pitch types for different pitchers (87 mph could be a changeup for one pitcher, fastball for another), requiring pitcher-specific context.</li>
+                <li><strong>Stability Over Complexity:</strong> Advanced clustering methods like DBSCAN introduced instability and sometimes collapsed entire arsenals. Simpler similarity-based centroid comparison proved more reliable.</li>
+                <li><strong>Domain Expert Integration:</strong> Pure algorithmic approaches often violated baseball logic. Allowing manual review and override was essential for production-ready results.</li>
+                <li><strong>Spin Rate Considerations:</strong> While spin provides valuable information, TrackMan spin measurements can occasionally be noisy. The 4D flagging system's conservative "closer to another cluster" requirement helps filter spin-driven false positives.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Future Enhancements</h2>
+            <ul>
+                <li>Validate and tune spin rate threshold in flagging system using clean reference data</li>
+                <li>Add confidence scores to classifications for better uncertainty quantification</li>
+                <li>Implement active learning to improve model with user corrections</li>                
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Back to Portfolio</a>
+            <a href="/cdn-cgi/l/email-protection#e99a9f8c879a86878383a98e84888085c78a8684">Contact Me</a>
+            <a href="https://github.com/jjsvenson/jj-svenson-baseball-analytics" target="_blank">GitHub</a>
+        </div>
+        <p style="margin-top: 1rem; opacity: 0.9;">JJ Svenson | UCLA Baseball Analytics | Statistics & Data Scien
