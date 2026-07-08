@@ -507,10 +507,9 @@
 
     <main>
         <div style="background: linear-gradient(135deg, #003399 0%, #0044cc 100%); border-radius: 12px; padding: 1.25rem 2rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
-            <div style="display: flex; gap: 5px; flex-shrink: 0;">
-                <div style="width: 14px; height: 42px; background: #009246; border-radius: 2px;"></div>
-                <div style="width: 14px; height: 42px; background: white; border-radius: 2px;"></div>
-                <div style="width: 14px; height: 42px; background: #cc0000; border-radius: 2px;"></div>
+            <div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
+                <img src="images/Italy.png" alt="Italy flag" style="height: 42px; border-radius: 3px; box-shadow: 0 1px 4px rgba(0,0,0,0.3);">
+                <img src="images/Italia.jpg" alt="Team Italia WBC logo" style="height: 42px; border-radius: 3px;">
             </div>
             <div>
                 <div style="color: white; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.2rem;">UCLA Statistics &amp; Data Science · Capstone Project (Stats 141XP)</div>
@@ -527,7 +526,7 @@
                 The model is trained on six years of MLB and AAA Statcast data (2020–2025) and predicts expected run value outcomes at the individual plate appearance level, assigning each matchup a score from 50–150 (100 = league average). It integrates pitch-type-specific whiff, run value, hard hit, and barrel interactions across nine pitch types alongside a Log5-derived baseline, delivered through a custom R Shiny matchup sheet app.
             </p>
             <p>
-                Post-tournament validation across 47 WBC games and 3,509 plate appearances showed bucketed OPS and Delta Run Expectancy correlations of r = 0.976 and r = 0.971 against model scores — a genuine out-of-sample test on a competition the model had no exposure to during training.
+                Post-tournament validation run across all 47 WBC games in the dataset — 3,509 plate appearances spanning all teams and matchups — showed bucketed OPS and Delta Run Expectancy correlations of r = 0.976 and r = 0.971 against model scores, with actual outcomes rising monotonically across every score bin.
             </p>
         </div>
 
@@ -560,7 +559,7 @@
                 <div class="feature-card">
                     <div class="feature-icon">1</div>
                     <h4>Pitch-Type Interaction Features</h4>
-                    <p>For each of nine pitch types (FF, SI, FC, SL, ST, CU, KC, CH, FS), the model combines pitch usage rate with pitcher and batter performance metrics — whiff rate, run value, hard hit rate, and barrel rate — creating 36 dedicated interaction terms that capture how a specific batter's tendencies match up against a specific pitcher's arsenal.</p>
+                    <p>For each of nine pitch types (FF, SI, FC, SL, ST, CU, KC, CH, FS), the model builds four interaction terms combining the pitcher's usage rate with matched pitcher-batter metrics: whiff rate, run value per pitch, hard hit rate, and barrel rate. This produces 36 pitch-type interaction features alongside pitch percentage columns, velocity and spin advantage terms, and several batter-level features — capturing how a specific batter's tendencies line up against a specific pitcher's arsenal pitch by pitch.</p>
                 </div>
 
                 <div class="feature-card">
@@ -590,7 +589,7 @@
                 <div class="feature-card">
                     <div class="feature-icon">6</div>
                     <h4>Interactive Shiny App</h4>
-                    <p>Model predictions feed a Shiny matchup sheet generator built in R, with an Italia/WBC theme supporting Italy-vs-opponent lineup construction. Coaches can select the opposing pitcher and see all Italian batters ranked by predicted matchup score, with exportable color-coded Excel output.</p>
+                    <p>Model predictions feed an R Shiny app with two main views: a general matchup page where any two WBC rosters can be compared head-to-head, and an Italy-specific scouting page where coaches can generate exportable, color-coded matchup sheets ranking Italian batters against an opposing team's pitchers, and vice versa.</p>
                 </div>
             </div>
         </section>
@@ -603,7 +602,7 @@
 
             <ol class="workflow-steps" style="margin-top: 1.5rem;">
                 <li><strong>Data Collection (01_collect_data.R):</strong> Downloads all MLB (2020–2025) and AAA (2023–2025) pitch-level Statcast data via Baseball Savant's API in 3-day chunks to stay under the 25K-pitch-per-request limit, with automatic retry logic and progress reporting.</li>
-                <li><strong>Processing (02_process_data.R):</strong> Cleans raw data, standardizes delta run expectancy columns across API schema changes, and filters to regular-season plate appearances.</li>
+                <li><strong>Processing (02_process_data.R):</strong> Cleans raw data, searches for the delta run expectancy column by checking several possible names Baseball Savant has used across API versions (`delta_run_exp`, `delta_run_exp_bat`, `run_exp_change`, `delta_home_run_exp`), and filters to regular-season plate appearances. Falls back to event-based run value approximations if no matching column is found.</li>
                 <li><strong>Quality Metrics (03_build_quality.R):</strong> Computes per-player pitcher and batter quality percentiles using a pnorm-scaled delta RE approach — the basis for Log5 prior probabilities.</li>
                 <li><strong>Feature Engineering (04_build_features.R):</strong> Builds per-player, per-handedness pitch-type features (usage rate, whiff rate, run value, hard hit rate, barrel rate, velocity, spin) for all pitchers and batters meeting minimum PA thresholds.</li>
                 <li><strong>Training (05_train_model.R):</strong> Assembles matchup-level training data (≥20 pitches per pitcher-batter-season pair), joins features, and trains XGBoost (eta = 0.05, max_depth = 6, 500 rounds) on the 2020–2024 holdout split first, then retrains on 2020–2025 for the final deployment model.</li>
@@ -611,44 +610,35 @@
 
             <div class="highlight-box">
                 <h4>Score Calibration</h4>
-                <p>Raw XGBoost predictions (in units of delta run expectancy per PA) are linearly rescaled relative to a 0.15 runs-per-PA baseline and shifted to center around 100, then clamped to the 50–150 range. A score of 125+ corresponds to a matchup predicted to produce OPS in the 1.9+ range in WBC validation; a score below 75 corresponds to near-zero or negative expected run value.</p>
+                <p>Raw XGBoost predictions (in units of delta run expectancy per PA) are linearly rescaled relative to a 0.15 runs-per-PA baseline and shifted to center around 100, then clamped to the 50–150 range. Anything above 100 is an advantage to the hitter and anything below 100 is an advantage to the pitcher.</p>
             </div>
 
-            <h3>WBC Adaptation</h3>
+            <h3>WBC Validation</h3>
             <p style="color: var(--text-light); line-height: 1.8;">
-                Because WBC players only have a few games of tournament data, the validation pipeline (validate_wbc_2026.R) merges small-sample WBC features with each player's existing MLB/AAA history for prediction. Players with no prior MLB/AAA record are excluded from app predictions to prevent noise from single-game WBC samples from inflating matchup scores.
+                For validation, WBC Statcast CSVs were processed using the same feature-building logic as the main pipeline and appended to the existing historical feature database, creating a combined dataset covering 2020–2026. The model then generated predictions for every WBC plate appearance using this combined feature set — so for a player with five years of MLB history, their WBC predictions draw on all of that context, not just their handful of WBC games.
+            </p>
+            <p style="color: var(--text-light); line-height: 1.8; margin-top: 1rem;">
+                The app's player database works differently: it uses only pre-2026 MLB and AAA data (≥10 PAs per handedness split), keeping small WBC samples out of the prediction features entirely to avoid inflating barrel and hard-hit rates on tiny samples from players who may have had one hot WBC game.
             </p>
 
-            <div class="tech-stack" style="margin-top: 1.5rem;">
-                <span class="tech-tag">R</span>
-                <span class="tech-tag">XGBoost</span>
-                <span class="tech-tag">tidyverse</span>
-                <span class="tech-tag">R Shiny</span>
-                <span class="tech-tag">Statcast / Baseball Savant</span>
-                <span class="tech-tag">Delta Run Expectancy</span>
-                <span class="tech-tag">Log5</span>
-                <span class="tech-tag">openxlsx</span>
-                <span class="tech-tag">DT</span>
-            </div>
         </section>
 
         <section>
             <h2>WBC 2026 Validation — Team Italy</h2>
 
             <div class="wbc-banner">
-                <div class="wbc-flag">
-                    <div class="flag-stripe flag-green"></div>
-                    <div class="flag-stripe flag-white"></div>
-                    <div class="flag-stripe flag-red"></div>
+                <div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
+                    <img src="images/Italy.png" alt="Italy flag" style="height: 42px; border-radius: 3px; box-shadow: 0 1px 4px rgba(0,0,0,0.3);">
+                    <img src="images/Italia.jpg" alt="Team Italia WBC logo" style="height: 42px; border-radius: 3px;">
                 </div>
                 <div class="wbc-banner-text">
-                    <h3>Team Italy · 2026 World Baseball Classic</h3>
-                    <p>47 games &nbsp;·&nbsp; 3,509 plate appearances &nbsp;·&nbsp; 2,987 unique pitcher-batter matchups</p>
+                    <h3>2026 World Baseball Classic Validation</h3>
+                    <p>47 games &nbsp;·&nbsp; 3,509 plate appearances &nbsp;·&nbsp; 2,987 unique pitcher-batter matchups · all teams</p>
                 </div>
             </div>
 
             <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 2rem;">
-                After delivering the model and app ahead of the tournament, I ran post-hoc validation against Italy's full WBC schedule to see how well predictions held up. The results below track actual outcomes against model scores across 47 games — a clean out-of-sample test on a competition the model never saw during training.
+                After delivering the model and app ahead of the tournament, I ran post-hoc validation across all 47 WBC games in the dataset to see how well predictions held up — a clean out-of-sample test on a competition the model never saw during training.
             </p>
 
             <div class="metrics-two-col">
@@ -736,7 +726,8 @@
 
             <div class="highlight-box">
                 <h4>Interpreting the Correlations</h4>
-                <p>The low PA-level and matchup-level correlations (r ≈ 0.37–0.39) are expected — individual plate appearance outcomes are inherently noisy, and single matchup samples are small. The meaningful signal is in the bin and bucket aggregations: when PAs are grouped by predicted score, actual delta run expectancy rises monotonically across every bin (r = 0.971), and OPS by score bucket follows the same pattern (r = 0.976). The model reliably ranks matchup quality even in a tournament it was never trained on.</p>
+                <p>The PA-level and matchup-level correlations (r ≈ 0.37–0.39) reflect the inherent noise in individual plate appearance outcomes — no model predicts single PAs reliably, and that's not the goal. The key finding is in the aggregations: when PAs are grouped by predicted score, actual delta run expectancy rises monotonically across every bin (r = 0.971), and OPS by score bucket follows the same staircase pattern (r = 0.976). The model consistently separates good matchups from bad ones across a tournament it was never trained on.
+                </p>
             </div>
 
             <div class="pdf-container">
@@ -761,8 +752,8 @@
             </div>
 
             <div class="highlight-box">
-                <h4>Separating Validation from App Features</h4>
-                <p>The WBC validation pipeline deliberately uses unfiltered WBC features (all PAs, even tiny samples) for generating predictions to validate against, while keeping the app's player database filtered to players with ≥10 MLB/AAA PAs per handedness split and no WBC-only records. This separates "can the model predict WBC outcomes" from "should WBC noise enter future app predictions."</p>
+                <h4>Keeping Validation and App Features Separate</h4>
+                <p>For validation, WBC features are appended to the historical database so predictions reflect each player's full career context — not just their few WBC games. The app's player database is handled differently: it uses only pre-2026 MLB and AAA data with a ≥10 PA per handedness split minimum, keeping WBC samples out entirely. A player who went 4-for-8 with three home runs in the WBC won't have that inflate their app score; the app reflects their actual MLB/AAA track record.</p>
             </div>
 
             <div class="highlight-box">
@@ -774,10 +765,12 @@
         <section>
             <h2>Future Directions</h2>
             <ul>
-                <li>Extend the model to include batted ball location tendencies (pull/oppo/center splits) for deeper fielding shift matchup context</li>
-                <li>Incorporate recency weighting to down-weight early career seasons in feature computation</li>
-                <li>Build confidence intervals around matchup scores using quantile regression or conformal prediction</li>
-                <li>Expand the Shiny app to support full lineup optimization across an opponent's probable bullpen</li>
+                <li>Extend the model to include batted ball location tendencies (pull/oppo/center splits) for deeper fielding alignment matchup context</li>
+                <li>Incorporate recency weighting to down-weight early career seasons in feature computation, better reflecting a player's current form</li>
+                <li>Build confidence intervals around matchup scores so coaches can distinguish high-confidence predictions from noisy ones</li>
+                <li>Add count-specific features (pitcher tendencies and batter performance in hitter's counts vs. pitcher's counts) to capture in-PA decision-making context</li>
+                <li>Incorporate pitch location and tunneling metrics</li>
+                <li>Extend to minor league contexts by testing whether the model trained on MLB/AAA data holds predictive validity when applied to lower-level player features</li>
             </ul>
         </section>
     </main>
@@ -788,7 +781,7 @@
             <a href="mailto:svensonjj@gmail.com">Contact Me</a>
             <a href="https://github.com/jjsvenson" target="_blank">GitHub</a>
         </div>
-        <p style="margin-top: 1rem; opacity: 0.9;">JJ Svenson | UCLA Baseball Analytics | Statistics & Data Science</p>
+        <p style="margin-top: 1rem; opacity: 0.9;">JJ Svenson | Baseball Analytics Associate, Detroit Tigers | UCLA Statistics & Data Science, Magna Cum Laude, 2026</p>
     </footer>
 </body>
 </html>
