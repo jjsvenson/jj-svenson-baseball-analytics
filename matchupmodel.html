@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitcher-Batter Matchup Model | JJ Svenson</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2c5282;
+            --accent-color: #c53030;
+            --text-dark: #1a202c;
+            --text-light: #4a5568;
+            --background: #ffffff;
+            --card-background: #f7fafc;
+            --border-color: #e2e8f0;
+            --italy-blue: #003399;
+            --italy-red: #cc0000;
+            --italy-green: #009246;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--background);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover { opacity: 1; }
+        .back-link::before { content: "← "; }
+
+        .project-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        /* Nav */
+        nav {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--primary-color); }
+
+        /* Main */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .overview {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .overview h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .overview p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .overview p:last-child { margin-bottom: 0; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .highlight-box {
+            background: #e6f7ff;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        ul {
+            margin-left: 2rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        ul li { margin-bottom: 0.5rem; }
+
+        .workflow-steps {
+            counter-reset: step-counter;
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .workflow-steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .workflow-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--primary-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* WBC Validation Section */
+        .wbc-banner {
+            background: linear-gradient(135deg, var(--italy-blue) 0%, #0044cc 100%);
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .wbc-flag {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .flag-stripe {
+            width: 60px;
+            height: 16px;
+            border-radius: 2px;
+        }
+
+        .flag-green { background: var(--italy-green); }
+        .flag-white { background: white; }
+        .flag-red { background: var(--italy-red); }
+
+        .wbc-banner-text h3 {
+            color: white;
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .wbc-banner-text p {
+            color: rgba(255,255,255,0.85);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Validation table */
+        .validation-table-wrap {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .validation-table-wrap h4 {
+            color: var(--primary-color);
+            font-size: 1.15rem;
+            margin-bottom: 1.25rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        thead th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        tbody tr:nth-child(even) {
+            background: white;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: #edf2f7;
+        }
+
+        tbody td {
+            padding: 0.7rem 1rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .r-strong {
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        /* Metrics 2-col layout */
+        .metrics-two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* PDF */
+        .pdf-container {
+            background: var(--card-background);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pdf-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .pdf-button {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pdf-button:hover { background: var(--secondary-color); }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 750px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid white;
+            border-radius: 8px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .footer-links a:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .project-title { font-size: 1.8rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .metrics-two-col { grid-template-columns: 1fr; }
+            .wbc-banner { flex-direction: column; gap: 1rem; }
+            .pdf-viewer { height: 550px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="back-link">Back to Portfolio</a>
+            <h1 class="project-title">Pitcher-Batter Matchup Model</h1>
+            <p class="project-subtitle">XGBoost Matchup Scoring System · UCLA Stats 141XP Capstone</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="nav-brand">JJ SVENSON</a>
+            <div class="nav-links">
+                <a href="index.html#projects">Projects</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="https://github.com/jjsvenson" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div style="background: linear-gradient(135deg, #003399 0%, #0044cc 100%); border-radius: 12px; padding: 1.25rem 2rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+            <div style="display: flex; gap: 5px; flex-shrink: 0;">
+                <div style="width: 14px; height: 42px; background: #009246; border-radius: 2px;"></div>
+                <div style="width: 14px; height: 42px; background: white; border-radius: 2px;"></div>
+                <div style="width: 14px; height: 42px; background: #cc0000; border-radius: 2px;"></div>
+            </div>
+            <div>
+                <div style="color: white; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.2rem;">UCLA Statistics &amp; Data Science · Capstone Project (Stats 141XP)</div>
+                <div style="color: rgba(255,255,255,0.85); font-size: 0.95rem;">Built for a Team Italy analytics staff member ahead of the 2026 World Baseball Classic</div>
+            </div>
+        </div>
+
+        <div class="overview">
+            <h2>Project Overview</h2>
+            <p>
+                A pitcher-batter matchup model and Shiny app built as my UCLA Statistics &amp; Data Science senior capstone (Stats 141XP), with a Team Italy analytics staff member as the client. The goal was to give him a practical tool for lineup and bullpen matchup decisions ahead of the 2026 World Baseball Classic.
+            </p>
+            <p>
+                The model is trained on six years of MLB and AAA Statcast data (2020–2025) and predicts expected run value outcomes at the individual plate appearance level, assigning each matchup a score from 50–150 (100 = league average). It integrates pitch-type-specific whiff, run value, hard hit, and barrel interactions across nine pitch types alongside a Log5-derived baseline, delivered through a custom R Shiny matchup sheet app.
+            </p>
+            <p>
+                Post-tournament validation across 47 WBC games and 3,509 plate appearances showed bucketed OPS and Delta Run Expectancy correlations of r = 0.976 and r = 0.971 against model scores — a genuine out-of-sample test on a competition the model had no exposure to during training.
+            </p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <span class="stat-value">0.976</span>
+                <span class="stat-label">OPS Bucket Correlation (WBC)</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">0.971</span>
+                <span class="stat-label">Delta RE Bin Correlation (WBC)</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">9</span>
+                <span class="stat-label">Pitch Types Modeled</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">6 yrs</span>
+                <span class="stat-label">MLB + AAA Training Data</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">50–150</span>
+                <span class="stat-label">Matchup Score Range</span>
+            </div>
+        </div>
+
+        <section>
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">1</div>
+                    <h4>Pitch-Type Interaction Features</h4>
+                    <p>For each of nine pitch types (FF, SI, FC, SL, ST, CU, KC, CH, FS), the model combines pitch usage rate with pitcher and batter performance metrics — whiff rate, run value, hard hit rate, and barrel rate — creating 36 dedicated interaction terms that capture how a specific batter's tendencies match up against a specific pitcher's arsenal.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">2</div>
+                    <h4>Log5 Baseline</h4>
+                    <p>Each matchup is anchored to a Log5 expected outcome derived from pitcher and batter overall quality percentiles, scaled relative to league-average run expectancy. This prevents the model from overfitting to small-sample pitch-level features in isolation and grounds predictions in true talent signals.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">3</div>
+                    <h4>Handedness Splits</h4>
+                    <p>All pitcher and batter features are computed separately for same-hand and opposite-hand matchups. Platoon effects are modeled explicitly as features, and the final score reflects the appropriate split for the specific pitcher-batter combination being evaluated.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">4</div>
+                    <h4>Velo & Spin Advantages</h4>
+                    <p>For the primary pitch types (fastball, slider, curveball), velocity and spin rate are compared against league-average benchmarks to quantify stuff advantage above or below expectation — capturing pitcher quality beyond run value alone.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">5</div>
+                    <h4>Swing Decision Interaction</h4>
+                    <p>An exit velocity vs. chase rate term combines a batter's raw contact quality with their out-of-zone swing tendencies, capturing the difference between high-contact hitters who protect the plate versus swing-happy power hitters more susceptible to chasing.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">6</div>
+                    <h4>Interactive Shiny App</h4>
+                    <p>Model predictions feed a Shiny matchup sheet generator built in R, with an Italia/WBC theme supporting Italy-vs-opponent lineup construction. Coaches can select the opposing pitcher and see all Italian batters ranked by predicted matchup score, with exportable color-coded Excel output.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Technical Implementation</h2>
+
+            <h3>Data Pipeline</h3>
+            <p style="color: var(--text-light); line-height: 1.8;">The pipeline runs in five sequential R scripts, each building on the previous output:</p>
+
+            <ol class="workflow-steps" style="margin-top: 1.5rem;">
+                <li><strong>Data Collection (01_collect_data.R):</strong> Downloads all MLB (2020–2025) and AAA (2023–2025) pitch-level Statcast data via Baseball Savant's API in 3-day chunks to stay under the 25K-pitch-per-request limit, with automatic retry logic and progress reporting.</li>
+                <li><strong>Processing (02_process_data.R):</strong> Cleans raw data, standardizes delta run expectancy columns across API schema changes, and filters to regular-season plate appearances.</li>
+                <li><strong>Quality Metrics (03_build_quality.R):</strong> Computes per-player pitcher and batter quality percentiles using a pnorm-scaled delta RE approach — the basis for Log5 prior probabilities.</li>
+                <li><strong>Feature Engineering (04_build_features.R):</strong> Builds per-player, per-handedness pitch-type features (usage rate, whiff rate, run value, hard hit rate, barrel rate, velocity, spin) for all pitchers and batters meeting minimum PA thresholds.</li>
+                <li><strong>Training (05_train_model.R):</strong> Assembles matchup-level training data (≥20 pitches per pitcher-batter-season pair), joins features, and trains XGBoost (eta = 0.05, max_depth = 6, 500 rounds) on the 2020–2024 holdout split first, then retrains on 2020–2025 for the final deployment model.</li>
+            </ol>
+
+            <div class="highlight-box">
+                <h4>Score Calibration</h4>
+                <p>Raw XGBoost predictions (in units of delta run expectancy per PA) are linearly rescaled relative to a 0.15 runs-per-PA baseline and shifted to center around 100, then clamped to the 50–150 range. A score of 125+ corresponds to a matchup predicted to produce OPS in the 1.9+ range in WBC validation; a score below 75 corresponds to near-zero or negative expected run value.</p>
+            </div>
+
+            <h3>WBC Adaptation</h3>
+            <p style="color: var(--text-light); line-height: 1.8;">
+                Because WBC players only have a few games of tournament data, the validation pipeline (validate_wbc_2026.R) merges small-sample WBC features with each player's existing MLB/AAA history for prediction. Players with no prior MLB/AAA record are excluded from app predictions to prevent noise from single-game WBC samples from inflating matchup scores.
+            </p>
+
+            <div class="tech-stack" style="margin-top: 1.5rem;">
+                <span class="tech-tag">R</span>
+                <span class="tech-tag">XGBoost</span>
+                <span class="tech-tag">tidyverse</span>
+                <span class="tech-tag">R Shiny</span>
+                <span class="tech-tag">Statcast / Baseball Savant</span>
+                <span class="tech-tag">Delta Run Expectancy</span>
+                <span class="tech-tag">Log5</span>
+                <span class="tech-tag">openxlsx</span>
+                <span class="tech-tag">DT</span>
+            </div>
+        </section>
+
+        <section>
+            <h2>WBC 2026 Validation — Team Italy</h2>
+
+            <div class="wbc-banner">
+                <div class="wbc-flag">
+                    <div class="flag-stripe flag-green"></div>
+                    <div class="flag-stripe flag-white"></div>
+                    <div class="flag-stripe flag-red"></div>
+                </div>
+                <div class="wbc-banner-text">
+                    <h3>Team Italy · 2026 World Baseball Classic</h3>
+                    <p>47 games &nbsp;·&nbsp; 3,509 plate appearances &nbsp;·&nbsp; 2,987 unique pitcher-batter matchups</p>
+                </div>
+            </div>
+
+            <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 2rem;">
+                After delivering the model and app ahead of the tournament, I ran post-hoc validation against Italy's full WBC schedule to see how well predictions held up. The results below track actual outcomes against model scores across 47 games — a clean out-of-sample test on a competition the model never saw during training.
+            </p>
+
+            <div class="metrics-two-col">
+                <div class="validation-table-wrap">
+                    <h4>Validation Correlations</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Description</th>
+                                <th>r</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>PA-level</td>
+                                <td>Individual PA outcomes</td>
+                                <td>0.385</td>
+                            </tr>
+                            <tr>
+                                <td>Delta RE bins</td>
+                                <td>PAs grouped by score bin</td>
+                                <td class="r-strong">0.971</td>
+                            </tr>
+                            <tr>
+                                <td>Matchup-level</td>
+                                <td>Aggregated pitcher-batter</td>
+                                <td>0.366</td>
+                            </tr>
+                            <tr>
+                                <td>OPS buckets</td>
+                                <td>OPS by score bucket</td>
+                                <td class="r-strong">0.976</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="validation-table-wrap">
+                    <h4>Delta RE by Score Bin</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Score</th>
+                                <th>PAs</th>
+                                <th>Avg ΔRE</th>
+                                <th>HH%</th>
+                                <th>K%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>&lt;75</td><td>2,567</td><td>−0.094</td><td>31%</td><td>26%</td></tr>
+                            <tr><td>75–90</td><td>461</td><td>+0.139</td><td>31%</td><td>15%</td></tr>
+                            <tr><td>90–100</td><td>157</td><td>+0.152</td><td>32%</td><td>15%</td></tr>
+                            <tr><td>100–110</td><td>132</td><td>+0.244</td><td>39%</td><td>15%</td></tr>
+                            <tr><td>110–125</td><td>104</td><td>+0.482</td><td>55%</td><td>13%</td></tr>
+                            <tr><td>125+</td><td>88</td><td>+0.529</td><td>55%</td><td>9%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="validation-table-wrap">
+                <h4>OPS by Score Bucket (Matchup-Level)</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bucket</th>
+                            <th>Matchups</th>
+                            <th>PAs</th>
+                            <th>Avg OPS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>&lt;50</td><td>1,079</td><td>1,266</td><td>0.327</td></tr>
+                        <tr><td>50–75</td><td>1,093</td><td>1,301</td><td>0.668</td></tr>
+                        <tr><td>75–90</td><td>398</td><td>461</td><td>1.039</td></tr>
+                        <tr><td>90–100</td><td>135</td><td>157</td><td>1.079</td></tr>
+                        <tr><td>100–110</td><td>114</td><td>132</td><td>1.238</td></tr>
+                        <tr><td>110–125</td><td>88</td><td>104</td><td>1.892</td></tr>
+                        <tr><td>125–150</td><td>80</td><td>88</td><td>2.013</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Interpreting the Correlations</h4>
+                <p>The low PA-level and matchup-level correlations (r ≈ 0.37–0.39) are expected — individual plate appearance outcomes are inherently noisy, and single matchup samples are small. The meaningful signal is in the bin and bucket aggregations: when PAs are grouped by predicted score, actual delta run expectancy rises monotonically across every bin (r = 0.971), and OPS by score bucket follows the same pattern (r = 0.976). The model reliably ranks matchup quality even in a tournament it was never trained on.</p>
+            </div>
+
+            <div class="pdf-container">
+                <div class="pdf-header">
+                    <div class="pdf-title">WBC Validation Report — Team Italy</div>
+                    <div>
+                        <a href="images/wbc_validation_report.pdf" class="pdf-button" target="_blank">
+                            <span>🔍</span> Open in New Tab
+                        </a>
+                    </div>
+                </div>
+                <embed src="images/wbc_validation_report.pdf" type="application/pdf" class="pdf-viewer">
+            </div>
+        </section>
+
+        <section>
+            <h2>Design Decisions & Learnings</h2>
+
+            <div class="highlight-box">
+                <h4>Why Pitch-Type Interactions Instead of Arsenal-Level Features</h4>
+                <p>Rather than summarizing each pitcher's arsenal into a single "stuff score," the model builds separate interaction terms per pitch type — combining how often the pitcher throws it, how well they throw it (run value, whiff), and how the batter performs against that specific pitch type. This lets the model capture matchups where a pitcher's best pitch is exactly the batter's weakness, rather than flattening that signal into averages.</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Separating Validation from App Features</h4>
+                <p>The WBC validation pipeline deliberately uses unfiltered WBC features (all PAs, even tiny samples) for generating predictions to validate against, while keeping the app's player database filtered to players with ≥10 MLB/AAA PAs per handedness split and no WBC-only records. This separates "can the model predict WBC outcomes" from "should WBC noise enter future app predictions."</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Two-Stage Training Strategy</h4>
+                <p>Training first on 2020–2024 and validating on 2025 confirmed the model generalizes across seasons before retraining on all six years for the final deployment model. This prevents the common error of only ever evaluating on training data while still using the full data for the model coaches actually use.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Future Directions</h2>
+            <ul>
+                <li>Extend the model to include batted ball location tendencies (pull/oppo/center splits) for deeper fielding shift matchup context</li>
+                <li>Incorporate recency weighting to down-weight early career seasons in feature computation</li>
+                <li>Build confidence intervals around matchup scores using quantile regression or conformal prediction</li>
+                <li>Expand the Shiny app to support full lineup optimization across an opponent's probable bullpen</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Back to Portfolio</a>
+            <a href="mailto:svensonjj@gmail.com">Contact Me</a>
+            <a href="https://github.com/jjsvenson" target="_blank">GitHub</a>
+        </div>
+        <p style="margin-top: 1rem; opacity: 0.9;">JJ Svenson | UCLA Baseball Analytics | Statistics & Data Science</p>
+    </footer>
+</body>
+</html>
