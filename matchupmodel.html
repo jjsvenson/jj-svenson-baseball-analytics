@@ -520,7 +520,7 @@
         <div class="overview">
             <h2>Project Overview</h2>
             <p>
-                A pitcher-batter matchup model and Shiny app built as my UCLA Statistics &amp; Data Science senior capstone (Stats 141XP), with a Team Italy analytics staff member as the client. The goal was to give him a practical tool for lineup and bullpen matchup decisions ahead of the 2026 World Baseball Classic.
+                A pitcher-batter matchup model and Shiny app built as my UCLA Statistics &amp; Data Science senior capstone (Stats 141XP), with a Team Italy analytics staff member as the client. The goal was to create a practical tool for lineup and bullpen matchup decisions ahead of the 2026 World Baseball Classic.
             </p>
             <p>
                 The model is trained on six years of MLB and AAA Statcast data (2020–2025) and predicts expected run value outcomes at the individual plate appearance level, assigning each matchup a score from 50–150 (100 = league average). It integrates pitch-type-specific whiff, run value, hard hit, and barrel interactions across nine pitch types alongside a Log5-derived baseline, delivered through a custom R Shiny matchup sheet app.
@@ -559,7 +559,7 @@
                 <div class="feature-card">
                     <div class="feature-icon">1</div>
                     <h4>Pitch-Type Interaction Features</h4>
-                    <p>For each of nine pitch types (FF, SI, FC, SL, ST, CU, KC, CH, FS), the model builds four interaction terms combining the pitcher's usage rate with matched pitcher-batter metrics: whiff rate, run value per pitch, hard hit rate, and barrel rate. This produces 36 pitch-type interaction features alongside pitch percentage columns, velocity and spin advantage terms, and several batter-level features — capturing how a specific batter's tendencies line up against a specific pitcher's arsenal pitch by pitch.</p>
+                    <p>For each of nine pitch types (FF, SI, FC, SL, ST, CU, KC, CH, FS), the model builds four interaction terms, combining the pitcher's usage rate with matched pitcher-batter metrics: whiff rate, run value per pitch, hard hit rate, and barrel rate. This produces 36 pitch-type interaction features alongside pitch percentage columns, velocity and spin advantage terms, and several batter-level features — capturing how a specific batter's tendencies line up against a specific pitcher's arsenal pitch by pitch.</p>
                 </div>
 
                 <div class="feature-card">
