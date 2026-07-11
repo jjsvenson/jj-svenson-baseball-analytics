@@ -72,6 +72,22 @@
             margin: 0 auto;
         }
 
+        header ul {
+            display: inline-block;
+            text-align: left;
+            margin: 0.5rem auto 0;
+            line-height: 1.8;
+            color: white;
+            opacity: 0.9;
+            max-width: 490px;
+            width: 100%;
+        }
+
+        header ul ul {
+            display: block;
+            margin-left: 1.5rem;
+        }
+
         /* Navigation */
         nav {
             background: white;
@@ -323,9 +339,17 @@
             <h1 class="name-brand">JJ Svenson</h1>
             <p class="tagline">Baseball Analytics & Data Science</p>
             <div class="header-divider"></div>
-            <p class="credentials">
-                Baseball Analytics Associate with the Detroit Tigers. UCLA Statistics and Data Science B.S., Magna Cum Laude, Class of 2026. Former Head Student Manager and Data Analyst for UCLA Baseball, with experience as a Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League.
-            </p>
+            <ul>
+                <li>Baseball Analytics Associate with the Detroit Tigers</li>
+                <li>UCLA Statistics and Data Science B.S.
+                  <ul>
+                    <li>Magna Cum Laude</li>
+                    <li>Class of 2026</li>
+                  </ul>
+                </li>
+                <li>Former Head Student Manager and Data Analyst for UCLA Baseball</li>
+                <li>Former Baseball Analytics Intern for the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League</li>
+            </ul>
         </div>
     </header>
 
@@ -349,7 +373,10 @@
                     My name is JJ Svenson and I am currently a Baseball Analytics Associate with the Detroit Tigers. I graduated from UCLA in June 2026 with a B.S. in Statistics and Data Science, Magna Cum Laude.
                 </p>
                 <p>
-                    My background includes four years as a Student Manager and Data Analyst for UCLA Baseball (including being Head Manager as a senior), a Baseball Analytics internship with the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League, and a senior capstone project building a pitcher-batter matchup model for a Team Italy analytics staff member ahead of the 2026 World Baseball Classic. I specialize in R-based baseball analytics, machine learning, and translating Statcast and Trackman data into tools coaches can actually use.
+                    My background includes four years as a Student Manager and Data Analyst for UCLA Baseball (including being Head Manager as a senior), a Baseball Analytics internship with the Yarmouth-Dennis Red Sox of the Cape Cod Baseball League, and a senior capstone project building a pitcher-batter matchup model for the Team Italy analytics staff ahead of the 2026 World Baseball Classic. 
+                </p>  
+                <p>
+                    I specialize in R-based baseball analytics, machine learning, and translating Statcast and Trackman data into tools coaches can actually use.
                 </p>
             </div>
             <img src="images/jj-ucla-field.jpg" alt="JJ Svenson at UCLA baseball field" class="about-image">
